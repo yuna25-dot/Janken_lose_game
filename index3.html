@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <title>じゃんけんで負けよう！</title>
+  <style>
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      background-color: #f0f8ff;
+    }
+    #screen {
+      width: 100%;
+      max-width: 400px;
+      padding: 20px;
+    }
+    h1, h2 {
+      margin: 15px 0;
+    }
+    .hand {
+      font-size: 80px;
+      margin: 10px 0;
+    }
+    #message {
+      font-size: 20px;
+      margin-top: 20px;
+    }
+    #buttons {
+      margin-top: 20px;
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+    button {
+      font-size: 20px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      cursor: pointer;
+      background-color: #87cefa;
+      border: none;
+      color: #fff;
+      transition: background-color 0.2s;
+    }
+    button:hover {
+      background-color: #4682b4;
+    }
+  </style>
+</head>
+<body>
+
+  <div id="screen"></div>
+
+  <script>
+    let screen = document.getElementById("screen");
+    let loseStreak = 0; // 連続負けカウント
+
+    function showStartScreen() {
+      loseStreak = 0;
+      screen.innerHTML = `
+        <h1>じゃんけんで<br>負けよう！</h1>
+        <button onclick="showScreen1()">スタート</button>
+      `;
+    }
+
+    function showScreen1() {
+      screen.innerHTML = `<h1>【最初は】</h1>`;
+      setTimeout(showScreen2, 1000);
+    }
+
+    function showScreen2() {
+      screen.innerHTML = `
+        <div class='hand'>✊</div>
+        <div class='hand'>✊</div>
+      `;
+      setTimeout(showScreen3, 1000);
+    }
+
+    function showScreen3() {
+      screen.innerHTML = `<h1>じゃんけん</h1>`;
+      setTimeout(showScreen4, 1000);
+    }
+
+    function showScreen4() {
+      let hands = ["✊", "✌️", "🖐"];
+      let aiHand = hands[Math.floor(Math.random() * 3)];
+
+      screen.innerHTML = `
+        <h2>相手の手</h2>
+        <div class='hand'>${aiHand}</div>
+        <h2>あなたの手を選んでください</h2>
+        <div id="buttons">
+          <button onclick="judge('${aiHand}','✊')">グー✊</button>
+          <button onclick="judge('${aiHand}','✌️')">チョキ✌️</button>
+          <button onclick="judge('${aiHand}','🖐')">パー🖐</button>
+        </div>
+      `;
+    }
+
+    function judge(ai, you) {
+      let result = "";
+      let lost = false;
+
+      if ((ai === "✊" && you === "✌️") ||
+          (ai === "✌️" && you === "🖐") ||
+          (ai === "🖐" && you === "✊")) {
+        result = "素晴らしい！あなたはじゃんけんに負けることができますね";
+        loseStreak++;
+        lost = true;
+      } else if (ai === you) {
+        result = "あいこですね。";
+      } else {
+        result = "何勝っちゃってるんですか。。";
+        loseStreak = 0;
+      }
+
+      let streakText = lost ? `<div id='message'>${loseStreak}回連続成功！</div>` : "";
+
+      screen.innerHTML = `
+        <h2>結果</h2>
+        <div class='hand'>相手：${ai}<br>あなた：${you}</div>
+        <div id='message'>${result}</div>
+        ${streakText}
+        <div id="buttons">
+          <button onclick="showScreen1()">もう一戦</button>
+          <button onclick="showStartScreen()">おわり</button>
+        </div>
+      `;
+    }
+
+    showStartScreen();
+  </script>
+
+</body>
+</html>
