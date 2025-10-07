@@ -121,14 +121,16 @@
       let streakText = lost ? `<div id='message'>${loseStreak}回連続成功！</div>` : "";
 
       screen.innerHTML = `
-        <h2>結果</h2>
-        <div class='hand'>相手：${ai}<br>あなた：${you}</div>
-        <div id='message'>${result}</div>
-        ${streakText}
-        <div id="buttons">
-          <button onclick="showScreen1()">もう一戦</button>
-          <button onclick="showStartScreen()">おわり</button>
-        </div>
+  <h2>結果</h2>
+  <div class='hand'>相手: ${ai}</div>
+  <div class='hand'>あなた: ${you}</div>
+  <div id='message'>${result}</div>
+  ${streakText}
+  <div id="buttons">
+    <button onclick="showScreen1()">もう一戦</button>
+    <button onclick="showStartScreen()">おわり</button>
+  </div>
+`;
       `;
     }
 
